@@ -1,0 +1,30 @@
+.qr-code-display {
+  background-color: white;
+  padding: 1.5rem;
+  border-radius: var(--radius);
+  display: inline-block;
+  box-shadow: var(--shadow);
+}
+
+.qr-code-display canvas {
+  display: block;
+  border-radius: 0.5rem;
+}
+
+.qr-scanner {
+  background-color: white;
+  padding: 1.5rem;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+.qr-scanner #qr-reader {
+  border: 2px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.qr-scanner button {
+  margin-top: 1rem;
+  width: 100%;
+}

@@ -1,0 +1,38 @@
+{
+  "name": "fileshare-monorepo",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Cross-platform P2P file sharing application",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-org/fileshare.git"
+  },
+  "license": "MIT",
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "pnpm --filter './packages/**' dev",
+    "build": "pnpm --filter './packages/**' build",
+    "test": "pnpm --filter './packages/**' test",
+    "test:unit": "pnpm --filter './packages/**' test:unit",
+    "test:e2e": "pnpm --filter './packages/**' test:e2e",
+    "test:load": "cd scripts && node load-test.js",
+    "lint": "pnpm --filter './packages/**' lint",
+    "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md}\"",
+    "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,json,md}\"",
+    "clean": "pnpm --filter './packages/**' clean && rm -rf node_modules",
+    "typecheck": "pnpm --filter './packages/**' typecheck"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.0",
+    "prettier": "^3.1.0",
+    "turbo": "^1.11.0",
+    "typescript": "^5.3.3"
+  },
+  "engines": {
+    "node": ">=20.0.0",
+    "pnpm": ">=8.0.0"
+  },
+  "packageManager": "pnpm@8.15.0"
+}

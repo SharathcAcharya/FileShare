@@ -1,0 +1,38 @@
+# TURN Server Configuration
+
+version: '3.8'
+
+services:
+  coturn:
+    image: coturn/coturn:latest
+    container_name: fileshare-turn
+    restart: unless-stopped
+    network_mode: host
+    volumes:
+      - ./turnserver.conf:/etc/coturn/turnserver.conf:ro
+      - ./turn-data:/var/lib/coturn
+    environment:
+      - DETECT_EXTERNAL_IP=yes
+      - DETECT_RELAY_IP=yes
+    command:
+      - -c
+      - /etc/coturn/turnserver.conf
+
+  # Optional: TURN server with fixed credentials (for testing)
+  coturn-test:
+    image: coturn/coturn:latest
+    container_name: fileshare-turn-test
+    restart: unless-stopped
+    ports:
+      - "3478:3478/tcp"
+      - "3478:3478/udp"
+      - "5349:5349/tcp"
+      - "5349:5349/udp"
+      - "49152-65535:49152-65535/udp"
+    volumes:
+      - ./turnserver-test.conf:/etc/coturn/turnserver.conf:ro
+    command:
+      - -c
+      - /etc/coturn/turnserver.conf
+    profiles:
+      - test

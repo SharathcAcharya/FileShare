@@ -1,0 +1,73 @@
+.file-picker {
+  border: 2px dashed var(--border);
+  border-radius: var(--radius);
+  padding: 3rem;
+  text-align: center;
+  background-color: white;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  min-height: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.file-picker:hover:not(.disabled) {
+  border-color: var(--primary-color);
+  background-color: var(--surface);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow);
+}
+
+.file-picker.dragging {
+  border-color: var(--primary-color);
+  background-color: #eef2ff;
+  border-width: 3px;
+}
+
+.file-picker.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.file-picker-label {
+  cursor: pointer;
+  display: block;
+  width: 100%;
+}
+
+.file-picker.disabled .file-picker-label {
+  cursor: not-allowed;
+}
+
+.file-picker-icon {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.file-picker h3 {
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+  color: var(--text);
+}
+
+.file-picker p {
+  color: var(--text-secondary);
+  margin: 0.5rem 0;
+}
+
+.file-picker-note {
+  font-size: 0.875rem;
+  margin-top: 1rem;
+  opacity: 0.7;
+}
