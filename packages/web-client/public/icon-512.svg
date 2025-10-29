@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#4f46e5;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#7c3aed;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="512" height="512" fill="url(#grad)" rx="51.2"/>
+  
+  <!-- File folder icon -->
+  <g transform="translate(102.4, 128)">
+    <rect width="307.2" height="256" fill="white" opacity="0.9" rx="25.6"/>
+    <path d="M 25.6 25.6 L 102.4 25.6 L 128 0 L 281.6 0 L 281.6 25.6" 
+          fill="white" opacity="0.9"/>
+  </g>
+  
+  <!-- Share arrows -->
+  <g transform="translate(358.4, 76.8)">
+    <circle cx="0" cy="0" r="40.96" fill="white" opacity="0.9"/>
+    <path d="M 0 40.96 L -76.8 128 L 76.8 128 Z" 
+          fill="white" opacity="0.9"/>
+  </g>
+</svg>
