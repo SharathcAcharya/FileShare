@@ -168,7 +168,11 @@ export function useTransferManager() {
 
       // Listen for answer
       signaling.current!.on('answer', async (msg) => {
-        console.log('[Hook] Received answer');
+        console.log('[Hook] Received answer:', msg.payload);
+        if (!msg.payload || !msg.payload.sdp || !msg.payload.type) {
+          console.error('[Hook] Invalid answer payload:', msg.payload);
+          return;
+        }
         await webrtc.current!.setRemoteDescription(peerId, msg.payload);
       });
 
@@ -242,7 +246,11 @@ export function useTransferManager() {
 
       // Listen for offer
       signaling.current!.on('offer', async (msg) => {
-        console.log('[Hook] Received offer');
+        console.log('[Hook] Received offer:', msg.payload);
+        if (!msg.payload || !msg.payload.sdp || !msg.payload.type) {
+          console.error('[Hook] Invalid offer payload:', msg.payload);
+          return;
+        }
         await webrtc.current!.setRemoteDescription(myId, msg.payload);
         
         // Create and send answer

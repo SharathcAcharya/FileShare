@@ -215,7 +215,10 @@ export class SignalingClient {
       from: this.clientId,
       to: peerId,
       timestamp: Date.now(),
-      payload: { sdp },
+      payload: { 
+        type: 'offer',
+        sdp 
+      },
     });
   }
 
@@ -229,7 +232,10 @@ export class SignalingClient {
       from: this.clientId,
       to: peerId,
       timestamp: Date.now(),
-      payload: { sdp },
+      payload: { 
+        type: 'answer',
+        sdp 
+      },
     });
   }
 
