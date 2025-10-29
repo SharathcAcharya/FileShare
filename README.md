@@ -2,28 +2,48 @@
 
 A cross-platform peer-to-peer file sharing application that enables secure, frictionless file transfers of any size across all platforms.
 
+## 🚀 Quick Start
+
+**Want to start using FileShare right now?** See the [Quick Start Guide](QUICK_START.md) for step-by-step instructions.
+
+```powershell
+# 1. Install dependencies
+pnpm install
+
+# 2. Start the application (both signaling server and web client)
+.\scripts\start-all.ps1
+
+# 3. Open your browser to http://localhost:3000
+```
+
+That's it! You're ready to transfer files securely.
+
 ## 🎯 Project Overview
 
 Installable PWA + optional native wrappers for secure peer-to-peer file transfers (any size, any file type) across Android, iOS, Windows, macOS, and Linux with local discovery, QR/pairing, chunked resume, and TURN relay fallback.
 
 ## ✨ Features
 
-### MVP
+### MVP (✅ Completed)
 - ✅ Installable PWA (desktop & mobile)
 - ✅ WebRTC DataChannel transfers with chunking, backpressure, and resume
 - ✅ QR code + numeric token pairing
-- ✅ Local LAN discovery (mDNS/UDP)
-- ✅ STUN + TURN fallback
-- ✅ End-to-end encryption per session
-- ✅ Transfer history and retry/resume
+- ✅ End-to-end encryption (X25519 + ChaCha20-Poly1305)
+- ✅ Real-time transfer progress with speed and ETA
+- ✅ Drag & drop file selection
+- ✅ STUN + TURN fallback support
+- ✅ Session-based connections
+- ✅ IndexedDB persistence for resume
 
 ### v1 (Planned)
+- Local LAN discovery (mDNS/UDP)
 - Native desktop wrappers (Tauri)
 - Android/iOS native wrappers
 - WebTorrent seed mode for multi-peer
 - Persistent trusted devices (TOFU)
 - Background seeding
 - Shareable encrypted links with TTL
+- Transfer history UI
 
 ### v2 (Future)
 - Bandwidth quotas
