@@ -27,6 +27,7 @@ export interface TransferProgress {
 
 export interface TransferState {
   status: 'idle' | 'connecting' | 'connected' | 'transferring' | 'completed' | 'error';
+  signalingConnected: boolean;
   session?: TransferSession;
   progress?: TransferProgress;
   error?: string;
@@ -34,7 +35,10 @@ export interface TransferState {
 }
 
 export function useTransferManager() {
-  const [state, setState] = useState<TransferState>({ status: 'idle' });
+  const [state, setState] = useState<TransferState>({ 
+    status: 'idle',
+    signalingConnected: false 
+  });
   
   // Initialize services (persistent across renders)
   const signaling = useRef<SignalingClient>();
@@ -59,10 +63,27 @@ export function useTransferManager() {
     crypto.current = new CryptoManager();
 
     // Connect to signaling server
-    signaling.current.connect().catch((error) => {
-      console.error('[Hook] Failed to connect to signaling server:', error);
-      setState((prev) => ({ ...prev, status: 'error', error: 'Failed to connect to server' }));
-    });
+    console.log('[Hook] Connecting to signaling server...');
+    setState((prev) => ({ ...prev, status: 'connecting' }));
+    
+    signaling.current.connect()
+      .then(() => {
+        console.log('[Hook] Connected to signaling server');
+        setState((prev) => ({ 
+          ...prev, 
+          status: 'idle',
+          signalingConnected: true 
+        }));
+      })
+      .catch((error) => {
+        console.error('[Hook] Failed to connect to signaling server:', error);
+        setState((prev) => ({ 
+          ...prev, 
+          status: 'error', 
+          signalingConnected: false,
+          error: 'Failed to connect to server. Please check that the signaling server is running.' 
+        }));
+      });
 
     return () => {
       // Cleanup on unmount
@@ -77,6 +98,11 @@ export function useTransferManager() {
    */
   const createSession = useCallback(async (displayName: string = 'Device') => {
     try {
+      // Check if signaling is connected
+      if (!state.signalingConnected) {
+        throw new Error('Not connected to signaling server. Please wait for connection or refresh the page.');
+      }
+
       setState((prev) => ({ ...prev, status: 'connecting' }));
 
       // Create session via signaling
@@ -155,7 +181,8 @@ export function useTransferManager() {
       return sessionInfo;
     } catch (error) {
       console.error('[Hook] Error creating session:', error);
-      setState((prev) => ({ ...prev, status: 'error', error: 'Failed to create session' }));
+      const errorMessage = error instanceof Error ? error.message : 'Failed to create session';
+      setState((prev) => ({ ...prev, status: 'error', error: errorMessage }));
       throw error;
     }
   }, [state.session?.peerId]);
@@ -169,6 +196,11 @@ export function useTransferManager() {
     displayName: string = 'Device'
   ) => {
     try {
+      // Check if signaling is connected
+      if (!state.signalingConnected) {
+        throw new Error('Not connected to signaling server. Please wait for connection or refresh the page.');
+      }
+
       setState((prev) => ({ ...prev, status: 'connecting' }));
 
       // Join session via signaling
@@ -229,10 +261,11 @@ export function useTransferManager() {
       return peerInfo;
     } catch (error) {
       console.error('[Hook] Error joining session:', error);
-      setState((prev) => ({ ...prev, status: 'error', error: 'Failed to join session' }));
+      const errorMessage = error instanceof Error ? error.message : 'Failed to join session';
+      setState((prev) => ({ ...prev, status: 'error', error: errorMessage }));
       throw error;
     }
-  }, []);
+  }, [state.signalingConnected]);
 
   /**
    * Send file to peer
@@ -356,7 +389,10 @@ export function useTransferManager() {
    * Reset transfer state
    */
   const reset = useCallback(() => {
-    setState({ status: 'idle' });
+    setState((prev) => ({ 
+      status: 'idle',
+      signalingConnected: prev.signalingConnected 
+    }));
     dataChannel.current = undefined;
   }, []);
 

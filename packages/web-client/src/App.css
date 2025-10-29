@@ -51,6 +51,7 @@ code {
   padding: 2rem;
   text-align: center;
   box-shadow: var(--shadow);
+  position: relative;
 }
 
 .app-header h1 {
@@ -62,6 +63,69 @@ code {
 .app-header p {
   font-size: 1.125rem;
   opacity: 0.9;
+}
+
+/* Connection Status */
+.connection-status {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+}
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  border-radius: 2rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  background-color: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+}
+
+.status-connecting {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.status-connected {
+  background-color: rgba(16, 185, 129, 0.2);
+}
+
+.status-error {
+  background-color: rgba(239, 68, 68, 0.2);
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+/* Error Banner */
+.error-banner {
+  background-color: #fee;
+  border: 1px solid #fcc;
+  border-radius: var(--radius);
+  padding: 1rem;
+  margin-bottom: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.error-banner p {
+  color: var(--error);
+  margin: 0;
+}
+
+.error-banner .btn-small {
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
 }
 
 .app-main {
@@ -104,13 +168,19 @@ code {
   box-shadow: var(--shadow);
 }
 
-.btn:hover {
+.btn:hover:not(:disabled) {
   transform: translateY(-2px);
   box-shadow: var(--shadow-lg);
 }
 
-.btn:active {
+.btn:active:not(:disabled) {
   transform: translateY(0);
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  box-shadow: none;
 }
 
 .btn-primary {
@@ -118,7 +188,7 @@ code {
   color: white;
 }
 
-.btn-primary:hover {
+.btn-primary:hover:not(:disabled) {
   background-color: var(--primary-hover);
 }
 
@@ -128,7 +198,7 @@ code {
   border: 2px solid var(--primary-color);
 }
 
-.btn-secondary:hover {
+.btn-secondary:hover:not(:disabled) {
   background-color: var(--surface);
 }
 

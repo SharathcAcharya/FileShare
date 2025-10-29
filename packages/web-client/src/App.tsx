@@ -95,9 +95,40 @@ function App() {
       <header className="app-header">
         <h1>📁 FileShare</h1>
         <p>Secure P2P File Transfer</p>
+        {/* Connection status indicator */}
+        <div className="connection-status">
+          {state.status === 'connecting' && !state.signalingConnected && (
+            <span className="status-badge status-connecting">
+              🔄 Connecting to server...
+            </span>
+          )}
+          {state.signalingConnected && state.status === 'idle' && (
+            <span className="status-badge status-connected">
+              ✅ Connected
+            </span>
+          )}
+          {state.status === 'error' && (
+            <span className="status-badge status-error">
+              ❌ Connection Error
+            </span>
+          )}
+        </div>
       </header>
 
       <main className="app-main">
+        {/* Show error message if connection failed */}
+        {state.status === 'error' && state.error && (
+          <div className="error-banner">
+            <p><strong>Error:</strong> {state.error}</p>
+            <button 
+              className="btn btn-small" 
+              onClick={() => window.location.reload()}
+            >
+              Reload Page
+            </button>
+          </div>
+        )}
+
         {view === 'home' && (
           <div className="home-view">
             <div className="hero">
@@ -109,12 +140,16 @@ function App() {
               <button 
                 className="btn btn-primary btn-large"
                 onClick={() => setView('send')}
+                disabled={!state.signalingConnected}
+                title={!state.signalingConnected ? 'Waiting for connection...' : ''}
               >
                 📤 Send Files
               </button>
               <button 
                 className="btn btn-secondary btn-large"
                 onClick={() => setView('receive')}
+                disabled={!state.signalingConnected}
+                title={!state.signalingConnected ? 'Waiting for connection...' : ''}
               >
                 📥 Receive Files
               </button>
