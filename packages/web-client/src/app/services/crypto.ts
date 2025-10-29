@@ -60,10 +60,13 @@ export class CryptoManager {
     salt: string,
     info: string = 'FileShare-v1-ChaCha20'
   ): Promise<Uint8Array> {
+    // Create a proper Uint8Array to ensure correct types
+    const secretBytes = new Uint8Array(sharedSecret);
+    
     // Import shared secret as key material
     const keyMaterial = await crypto.subtle.importKey(
       'raw',
-      sharedSecret,
+      secretBytes,
       { name: 'HKDF' },
       false,
       ['deriveBits']
@@ -427,9 +430,8 @@ export class CryptoManager {
       '🎰',
     ];
 
-    const emojiStr = fingerprint
-      .slice(0, 6)
-      .map((byte) => emojis[byte % emojis.length])
+    const emojiStr: string = Array.from(fingerprint.slice(0, 6))
+      .map((byte: number): string => emojis[byte % emojis.length])
       .join('');
 
     return {

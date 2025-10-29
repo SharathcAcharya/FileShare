@@ -8,7 +8,6 @@ import { openDB, DBSchema, IDBPDatabase } from 'idb';
 // Constants
 const CHUNK_SIZE = 65536; // 64 KB
 const BUFFER_THRESHOLD = 16 * 1024 * 1024; // 16 MB
-const MAX_RETRIES = 3;
 
 // Types
 export interface FileManifest {
@@ -382,9 +381,9 @@ export class FileStreamManager {
           }
         }
 
-        // Pass through to original handler
+        // Pass through to original handler with proper context
         if (originalOnMessage) {
-          originalOnMessage(event);
+          originalOnMessage.call(channel, event);
         }
       };
 
@@ -423,13 +422,14 @@ export class FileStreamManager {
     chunks: Map<number, Uint8Array>,
     manifest: FileManifest
   ): Promise<Blob> {
-    const sortedChunks: Uint8Array[] = [];
+    const sortedChunks: BlobPart[] = [];
     for (let i = 0; i < manifest.chunkCount; i++) {
       const chunk = chunks.get(i);
       if (!chunk) {
         throw new Error(`Missing chunk ${i}`);
       }
-      sortedChunks.push(chunk);
+      // Create proper Uint8Array to ensure correct types for Blob
+      sortedChunks.push(new Uint8Array(chunk));
     }
 
     return new Blob(sortedChunks, { type: manifest.mimeType });
