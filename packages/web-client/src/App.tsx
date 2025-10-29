@@ -65,9 +65,22 @@ function App() {
   const handleFileSelect = async (file: File) => {
     setSelectedFile(file);
     
+    // Check if connected before creating session
+    if (!state.signalingConnected) {
+      alert('Not connected to server yet. Please wait a moment and try again.');
+      setSelectedFile(null);
+      return;
+    }
+    
     if (!state.session) {
       // Create session if not already created
-      await handleStartSending();
+      try {
+        await handleStartSending();
+      } catch (error) {
+        console.error('[App] Failed to create session during file selection:', error);
+        setSelectedFile(null);
+        alert('Failed to create session. Please check your connection and try again.');
+      }
     }
   };
 
@@ -186,7 +199,13 @@ function App() {
             {state.status === 'idle' && !selectedFile && (
               <>
                 <p>Select a file to share</p>
-                <FilePicker onFileSelect={handleFileSelect} />
+                {!state.signalingConnected && (
+                  <p className="warning-text">⏳ Waiting for connection to server...</p>
+                )}
+                <FilePicker 
+                  onFileSelect={handleFileSelect} 
+                  disabled={!state.signalingConnected}
+                />
               </>
             )}
 

@@ -98,8 +98,8 @@ export function useTransferManager() {
    */
   const createSession = useCallback(async (displayName: string = 'Device') => {
     try {
-      // Check if signaling is connected
-      if (!state.signalingConnected) {
+      // Check if signaling is connected (check directly from service)
+      if (!signaling.current?.isConnected()) {
         throw new Error('Not connected to signaling server. Please wait for connection or refresh the page.');
       }
 
@@ -200,8 +200,8 @@ export function useTransferManager() {
     displayName: string = 'Device'
   ) => {
     try {
-      // Check if signaling is connected
-      if (!state.signalingConnected) {
+      // Check if signaling is connected (check directly from service)
+      if (!signaling.current?.isConnected()) {
         throw new Error('Not connected to signaling server. Please wait for connection or refresh the page.');
       }
 
@@ -273,7 +273,7 @@ export function useTransferManager() {
       setState((prev) => ({ ...prev, status: 'error', error: errorMessage }));
       throw error;
     }
-  }, [state.signalingConnected]);
+  }, []);
 
   /**
    * Send file to peer

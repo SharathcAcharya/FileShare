@@ -296,6 +296,16 @@ code {
   font-size: 1.125rem;
 }
 
+.warning-text {
+  color: #f59e0b;
+  font-weight: 500;
+  margin: 0.5rem 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
   .app-header h1 {
